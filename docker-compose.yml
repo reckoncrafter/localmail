@@ -1,0 +1,12 @@
+services:
+  mail:
+    container_name: localmail
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "993:993"
+    volumes:
+      - ./Maildir:/var/mail/mailuser/Maildir
+    restart: unless-stopped
+    environment:
+      MAIL_PASSWD: "secure_password"

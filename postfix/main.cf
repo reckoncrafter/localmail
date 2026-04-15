@@ -1,0 +1,19 @@
+myhostname = mail.local
+mydomain = local
+myorigin = $myhostname
+
+inet_interfaces = loopback-only
+mydestination = $myhostname, localhost.$mydomain, localhost
+
+virtual_mailbox_domains = mail.local
+virtual_mailbox_base = /var/mail
+virtual_mailbox_maps = hash:/etc/postfix/vmailbox
+virtual_uid_maps = static:101
+virtual_gid_maps = static:104
+
+home_mailbox = Maildir/
+
+smtpd_banner = $myhostname ESMTP
+biff = no
+append_dot_mydomain = no
+compatibility_level = 3.6
