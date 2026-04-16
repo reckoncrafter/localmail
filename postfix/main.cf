@@ -1,19 +1,26 @@
-myhostname = mail.local
-mydomain = local
-myorigin = $myhostname
-
-inet_interfaces = loopback-only
-mydestination = $myhostname, localhost.$mydomain, localhost
-
-virtual_mailbox_domains = mail.local
-virtual_mailbox_base = /var/mail
-virtual_mailbox_maps = hash:/etc/postfix/vmailbox
-virtual_uid_maps = static:101
-virtual_gid_maps = static:104
-
-home_mailbox = Maildir/
-
 smtpd_banner = $myhostname ESMTP
 biff = no
 append_dot_mydomain = no
-compatibility_level = 3.6
+recipient_delimiter = +
+readme_directory = no
+myhostname = mail
+mydomain = mail.local
+myorigin = $mydomain
+inet_interfaces = loopback-only
+mydestination = localhost
+mynetworks = 127.0.0.0/8
+
+maillog_file = /var/log/postfix.log
+
+virtual_mailbox_domains = /etc/postfix/virtual_domains
+virtual_mailbox_base = /var/mail
+virtual_mailbox_maps = texthash:/etc/postfix/vmailbox
+virtual_alias_maps = texthash:/etc/postfix/virtual_alias
+virtual_minimum_uid = 100
+virtual_uid_maps = static:5000
+virtual_gid_maps = static:5000
+virtual_transport = virtual
+virtual_mailbox_size = 25000
+mailbox_size_limit = 0
+message_size_limit = 250000
+dovecot_destination_recipient_limit = 1
