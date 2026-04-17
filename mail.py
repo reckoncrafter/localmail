@@ -23,7 +23,7 @@ def send_mail():
     app.logger.info(f"Received email from {sender} with subject '{subject}'")
 
     if not body or len(body) > 5000:
-        return jsonify({"error": "Invalid body"}, 400)
+        return jsonify({"status": 400, "message":"Bad Request. Body too long."},)
     
     msg = EmailMessage()
     msg['From'] = sender
