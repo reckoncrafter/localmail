@@ -19,7 +19,7 @@ def send_mail():
     app.logger.info(f"Received email from {sender} with subject '{subject}'")
 
     if not body or len(body) > 5000:
-        return jsonify({"error": "Invalid body"}, 400)
+        return jsonify({"status": 400, "message":"Bad Request. Body too long."},)
     
     msg = EmailMessage()
     msg['From'] = sender
@@ -31,9 +31,12 @@ def send_mail():
 
     result = subprocess.run([SENDMAIL, '-t', '-oi'],
                    input=msg.as_bytes(),
-                   check=True)
+                   check=True,)
+
+    if result.returncode != os.EX_OK:
+        return jsonify({"status":500, "message":"sendmail error."})
     
-    return jsonify({"status": "sent"}, 200)
+    return jsonify({"status":200, "message":"OK"})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
