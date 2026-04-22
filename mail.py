@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify
 from email.message import EmailMessage
-import subprocess
+import smtplib
 import os
 
 app = Flask(__name__)
 
 SENDMAIL = "/usr/sbin/sendmail"
-TO_ADDR = "contact@mail.local"
+TO_ADDR = "contact@localhost"
+LMTP_SOCK = "/run/dovecot/lmtp"
 
 @app.route('/send', methods=['POST'])
 def send_mail():
@@ -29,10 +30,9 @@ def send_mail():
 
     app.logger.info(f"Prepared email:\n{msg}")
 
-    result = subprocess.run([SENDMAIL, '-t', '-oi'],
-                   input=msg.as_bytes(),
-                   check=True)
-    
+    with smtplib.LMTP(LMTP_SOCK) as lmtp:
+        lmtp.send_message(msg)
+        
     return jsonify({"status": "sent"}, 200)
 
 if __name__ == '__main__':

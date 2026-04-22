@@ -5,6 +5,8 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
       - "993:993"
+      - "143:143"
+      - "587:587"
     # volumes:
     #   - ./Maildir:/var/mail/mailuser/Maildir
     restart: unless-stopped
