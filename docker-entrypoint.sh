@@ -29,6 +29,10 @@ echo "Starting dovecot..."
 postmap /etc/postfix/recipient_rewrite
 postfix start
 
+mkdir -p /var/log/rawlog
+mkdir -p /var/log/rawlog/relay
+chmod -R 777 /var/log/rawlog
+
 dovecot --version
 dovecot
 
