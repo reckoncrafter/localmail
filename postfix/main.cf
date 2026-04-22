@@ -1,0 +1,20 @@
+myhostname = localhost
+mydomain = localhost
+myorigin = localhost
+maillog_file = /var/log/postfix.log
+
+inet_interfaces = localhost
+inet_protocols = ipv4
+
+mydestination =
+relay_domains =
+
+smtpd_recipient_restrictions = reject_unauth_destination
+
+recipient_canonical_maps = pcre:/etc/postfix/recipient_rewrite
+
+default_transport = lmtp:unix:/run/dovecot/lmtp
+
+notify_classes =
+bounce_queue_lifetime = 0
+maximal_queue_lifetime = 0

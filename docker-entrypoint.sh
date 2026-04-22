@@ -26,6 +26,9 @@ EOF
 chmod 600 /etc/dovecot/users
 
 echo "Starting dovecot..."
+postmap /etc/postfix/recipient_rewrite
+postfix start
+
 dovecot --version
 dovecot
 

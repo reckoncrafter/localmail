@@ -8,6 +8,8 @@ RUN apk add --no-cache python3 \
     dovecot \
     dovecot-lmtpd \
     dovecot-submissiond \
+    postfix \
+    postfix-pcre \
     ca-certificates \
     bash \
     busybox-suid \
@@ -17,13 +19,16 @@ RUN apk add --no-cache python3 \
     inetutils-telnet \
     mutt
 
-RUN adduser -D -u 5000 -h /home/vmail -s /usr/bin/nologin vmail
-RUN usermod -u 5000 vmail && groupmod -g 5000 vmail
-#RUN addgroup -g 5000 vmail
+# RUN adduser -D -u 5000 -h /home/vmail -s /usr/bin/nologin vmail
+RUN usermod -u 5000 vmail
+RUN addgroup -g 5000 vmail
+RUN groupmod -g 5000 vmail
 
 RUN usermod -aG vmail dovecot
+RUN usermod -aG vmail postfix
 
 COPY dovecot/dovecot.conf /etc/dovecot/dovecot.conf
+COPY postfix/ /etc/postfix/
 
 COPY mail.py  /opt/mail/mail.py
 
