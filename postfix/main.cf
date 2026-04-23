@@ -1,6 +1,6 @@
-myhostname = localhost
-mydomain = localhost
-myorigin = localhost
+myhostname = <MAIL_DOMAIN>
+mydomain = <MAIL_DOMAIN>
+myorigin = <MAIL_DOMAIN>
 maillog_file = /var/log/postfix.log
 
 
@@ -8,15 +8,16 @@ inet_interfaces = localhost
 inet_protocols = ipv4
 
 mydestination =
-relay_domains = localhost
+relay_domains = localhost, <MAIL_DOMAIN>
 
 smtpd_client_restrictions = permit_inet_interfaces, reject
 smtpd_recipient_restrictions = permit_auth_destination, reject_unauth_destination
 
-default_transport = lmtp:unix:/run/dovecot/lmtp
+relay_transport = lmtp:unix:/run/dovecot/lmtp
 
 notify_classes =
 bounce_queue_lifetime = 0
 maximal_queue_lifetime = 0
 
-append_dot_mydomain = no
+append_dot_mydomain = yes
+disable_dns_lookups = yes

@@ -2,11 +2,14 @@ from flask import Flask, request, jsonify
 from email.message import EmailMessage
 import smtplib
 import os
+import sys
 
 app = Flask(__name__)
 
 SENDMAIL = "/usr/sbin/sendmail"
-TO_ADDR = "contact@localhost"
+MAIL_USER = os.environ.get("MAIL_USER")
+MAIL_DOMAIN = os.environ.get("MAIL_DOMAIN")
+TO_ADDR = f"{MAIL_USER}@{MAIL_DOMAIN}"
 LMTP_SOCK = "/run/dovecot/lmtp"
 
 @app.route('/send', methods=['POST'])
@@ -14,7 +17,7 @@ def send_mail():
     data = request.get_json(force=True)
 
     subject = data.get('subject', 'Contact Form')
-    sender = data.get('from', 'webserver@mail.local')
+    sender = data.get('from', 'contactform@mail.local')
     body = data.get('body', '')
 
     app.logger.info(f"Received email from {sender} with subject '{subject}'")

@@ -38,7 +38,8 @@ RUN chmod +x /docker-entrypoint.sh
 EXPOSE 993 8080
 
 # VOLUME ["/var/mail"]
-# VOLUME ["etc/ssl"]
+VOLUME ["/etc/ssl/dovecot/certificate.pem"]
+VOLUME ["/etc/ssl/dovecot/privatekey.pem"]
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
