@@ -36,7 +36,7 @@ def send_mail():
     with smtplib.LMTP(LMTP_SOCK) as lmtp:
         lmtp.send_message(msg)
         
-    return jsonify({"status": "sent"}, 200)
+    return jsonify({"status": 200, "message":"OK"})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)
