@@ -1,0 +1,19 @@
+services:
+  mail:
+    container_name: localmail
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080" # HTTP API
+      - "993:993" # IMAPS
+      - "143:143" # IMAP
+      - "587:587" # SMTP
+    volumes:
+      - /home/dcf/ssl/ssl-cert-snakeoil.pem:/etc/ssl/dovecot/certificate.pem
+      - /home/dcf/ssl/ssl-cert-snakeoil.key:/etc/ssl/dovecot/privatekey.pem
+      # SSL certs must be mounted to these paths
+    restart: unless-stopped
+    environment:
+      MAIL_PASSWD: "secure_password"
+      MAIL_USER: "mailbox"
+      MAIL_DOMAIN: "mail.local"
+      # These variables should be defined, otherwise they will recieve default values
