@@ -44,22 +44,37 @@ Here's an example docker-compose.yml to build the container:
 services:
   mail:
     container_name: localmail
-    build: .
+    build: ./localmail
     ports:
       - "127.0.0.1:8080:8080" # HTTP API
       - "993:993" # IMAPS
       - "143:143" # IMAP
       - "587:587" # SMTP
     volumes:
-      - /etc/ssl/private/ssl-cert-snakeoil.pem:/etc/ssl/dovecot/certificate.pem
-      - /etc/ssl/private/ssl-cert-snakeoil.key:/etc/ssl/dovecot/privatekey.pem
-      # SSL certs must be mounted to these paths
-    restart: unless-stopped
-    environment:
-      MAIL_PASSWD: "super_secret_password"
-      MAIL_USER: "mailuser"
-      MAIL_DOMAIN: "localmail.example"
-      # These variables should be defined, otherwise they will recieve default values
+      - mail_data:/var/mail
+    restart: none
+    configs:
+      - mail_env
+    secrets:
+      - certificate.pem
+      - privatekey.pem
+
+volumes:
+  mail_data:
+    # External volume for persistent storage of mailbox content
+
+configs:
+  mail_env:
+    file: # Points to a .env file containing definitions for:
+      # MAIL_USER (mailbox username)
+      # MAIL_DOMAIN (mailbox domain. This can really be anything you want.)
+      # MAIL_PASSWD (password to authenticate over SMTP and IMAP)
+
+secrets:
+  certificate.pem:
+    # Points to the SSL certificate used to encrypt IMAP and SMTP
+  privatekey.pem:
+    # Points to the SSL private key used to sign the certificate.
 ```
 
 You can then build the container with:

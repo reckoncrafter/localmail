@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+set -a
+source /mail_env
+set +a
+
 ADDRESS=$MAIL_USER@$MAIL_DOMAIN
 
 echo "Checking prerequisites..."
@@ -20,13 +24,13 @@ elif [ -z "$MAIL_PASSWD" ]; then
     echo "Default password: password123"
     MAIL_PASSWD="passwd123"
 
-elif [ -z "$(ls /etc/ssl/dovecot/certificate.pem)" ]; then
+elif [ -z "$(ls /run/secrets/certificate.pem)" ]; then
     echo "No SSL certificate found.\
     Please mount a certificate (e.g. fullchain.pem) to:\
     /etc/ssl/dovecot/certificate.pem"
     exit;
 
-elif [ -z "$(ls /etc/ssl/dovecot/privatekey.pem)" ]; then
+elif [ -z "$(ls /run/secrets/privatekey.pem)" ]; then
     echo "No SSL private key found.\
     Please mount a private key (e.g. privkey.pem) to:\
     /etc/ssl/dovecot/privatekey.pem"
