@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from waitress import serve
 from email.message import EmailMessage
 import smtplib
 import os
@@ -39,4 +40,5 @@ def send_mail():
     return jsonify({"status": 200, "message":"OK"})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    #app.run(host='0.0.0.0', port=8080)
+    serve(app, host="0.0.0.0", port=8080)
